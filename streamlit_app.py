@@ -17,7 +17,7 @@ st.write(
 
 @st.cache_data
 def load_data():
-    return pd.read_csv("nasa_planets.csv")
+    return pd.read_csv("nasa_planets300.csv")
 
 try:
     df = load_data()
