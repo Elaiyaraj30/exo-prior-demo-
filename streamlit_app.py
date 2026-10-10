@@ -61,6 +61,33 @@ col2.metric(
     "Unique planets",
     filtered[name_col].nunique()
 )
+# EXO-PRIOR: Initial investigation priority score
+st.subheader("Planet Investigation Priority")
+
+if "pl_rade" in filtered.columns:
+    filtered["priority_score"] = (
+        filtered["pl_rade"].notna().astype(int) * 50
+        + filtered["st_teff"].notna().astype(int) * 30
+        + filtered["pl_orbper"].notna().astype(int) * 20
+    )
+
+    ranked = filtered.sort_values(
+        "priority_score", ascending=False
+    )
+
+    st.write(
+        "This preliminary score prioritizes records with "
+        "more available measurements. It does not measure habitability."
+    )
+
+    st.dataframe(
+        ranked[[
+            name_col, "priority_score",
+            "pl_rade", "st_teff", "pl_orbper"
+        ]],
+        use_container_width=True,
+        hide_index=True
+    )
 
 st.subheader("Planet catalogue")
 st.dataframe(filtered, use_container_width=True, hide_index=True)
